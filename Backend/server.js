@@ -1,7 +1,7 @@
 const express = require("express");
 const dbConnection = require("./config/DbConnnection");
-// const routes = require("");
 const dotenv = require("dotenv");
+const routes = require("./routes/route");
 const port = process.env.PORT || 8000;
 // for middleware purpose
 const app = express();
@@ -14,7 +14,5 @@ app.listen(port, () => {
 // db connection calling
 dbConnection();
 
-
-
-
-
+// added the routes
+routes.use("/api/blog" , routes);
