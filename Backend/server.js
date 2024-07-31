@@ -1,19 +1,23 @@
 const express = require("express");
-const dbConnection = require("./config/DbConnnection");
-dbConnection();
-
-require('dotenv').config();
-const routes = require("./routes/route");
-const port = process.env.PORT || 8000;
-// for middleware purpose
 const app = express();
-// this is called as you're mounting here
+const routes = require("./routes/MainRoutes");
+require("dotenv").config();
+const dbConnection = require("./config/DbConnnection");
+
+// post definde
+const port = process.env.PORT || 8000;
 app.use(express.json());
-// listend port at
+// db connections
+dbConnection();
+//server running
+app.get("/", (req, res) => {
+  res.send("nodemailer server running !");
+});
+
+// added the routes
+app.use("/api/blog", routes);
+
+// listen ports
 app.listen(port, () => {
   console.log(`port run at ${port}`);
 });
-// db connection calling
-
-// added the routes
-routes.use("/api/blog" , routes);
