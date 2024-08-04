@@ -21,10 +21,8 @@ app.get("/", (req, res) => {
 
 // Blog routes
 app.use("/api/blog", routes);
-
 // Authentication routes
 app.use("/api/auth", LoginRoute);
-
 
 // Start the server
 app.listen(port, () => {
