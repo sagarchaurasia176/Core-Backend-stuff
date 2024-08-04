@@ -1,23 +1,41 @@
 const express = require("express");
 const app = express();
 const routes = require("./routes/MainRoutes");
+const LoginRoute = require("./routes/log/LoginRoutes");
 require("dotenv").config();
 const dbConnection = require("./config/DbConnnection");
 
-// post definde
+// Environment variable configuration
 const port = process.env.PORT || 8000;
+
+// Middleware for parsing JSON bodies
 app.use(express.json());
-// db connections
+
+// Database connection
 dbConnection();
-//server running
+
+// Server status route
 app.get("/", (req, res) => {
-  res.send("nodemailer server running !");
+  res.send("Nodemailer server running!");
 });
 
-// added the routes
+// Blog routes
 app.use("/api/blog", routes);
 
-// listen ports
+// Authentication routes
+app.use("/api/auth", LoginRoute);
+
+// Basic error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({
+    success: false,
+    message: "Internal server error",
+    error: err.message,
+  });
+});
+
+// Start the server
 app.listen(port, () => {
-  console.log(` This port run at ${port}`);
+  console.log(`Server running on port ${port}`);
 });
