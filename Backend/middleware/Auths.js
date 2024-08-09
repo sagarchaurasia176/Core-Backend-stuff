@@ -5,23 +5,28 @@ exports.Authentication = async (req, res, next) => {
   try {
     // Extract the JWT token from request body or cookies
     const jwtToken = req.body.token; // Corrected `req.cookie` to `req.cookies`
+
+    //if token not present then
     if (!jwtToken) {
       return res.status(400).json({
         success: false,
         message: "JWT token is empty!",
       });
     }
-    const jwtSecret = process.env.SECRET_TOKEN;
-    //check the verify at the jwt part
-    const authJwtTokenCheck = await jwt.verify(jwtToken, jwtSecret);
-    if (!authJwtTokenCheck) {
-      return res.status(400).json({
+    //jwt secret
+    try {
+      const jwtSecret = process.env.SECRET_TOKEN;
+      //check the token first here
+      const afterJwtVerifyTheOp = jwt.verify(jwtToken, jwtSecret);
+    
+      // check this existing token is matched or not !
+        req.checkNameAndRoleExist = afterJwtVerifyTheOp;
+    } catch (er) {
+      return res.status(401).json({
         success: false,
-        message: "token not matched!",
+        message: "Something went wrong in the token verify in auth page",
+        error: er.message,
       });
-    } else {
-      //token decoded here first
-      req.checkNameAndRoleExist = authJwtTokenCheck;
     }
   } catch (er) {
     return res.status(401).json({
