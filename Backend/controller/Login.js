@@ -56,17 +56,14 @@ exports.loginController = async (req, res) => {
         message: "login succesfully",
         checkNameAndRoleExist,
         token,
+        
       });
       return res.json({
         success: true,
         message: "data stored",
         dbCreation,
       });
-
-    }
-    
-    
-    catch (er) {
+    } catch (er) {
       return res.status(400).json({
         success: false,
         message: "Password invalid !",
