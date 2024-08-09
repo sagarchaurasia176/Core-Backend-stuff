@@ -51,22 +51,15 @@ exports.loginController = async (req, res) => {
         maxAge: 1000 * 60 * 15, // would expire after 15 minutes
         httpOnly: true, // The cookie only accessible by the web server
       };
-      res.cookie("auths", token, options).status(200).json({
+    return  res.cookie("auths", token, options).status(200).json({
         success: true,
         message: "login succesfully",
         checkNameAndRoleExist,
         token,
-      });
-      return res.json({
-        success: true,
-        message: "data stored",
-        dbCreation,
-      });
 
-    }
+      });
     
-    
-    catch (er) {
+    } catch (er) {
       return res.status(400).json({
         success: false,
         message: "Password invalid !",

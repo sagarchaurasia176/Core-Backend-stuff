@@ -5,38 +5,37 @@ exports.Authentication = async (req, res, next) => {
   try {
     // Extract the JWT token from request body or cookies
     const jwtToken = req.body.token; // Corrected `req.cookie` to `req.cookies`
+
+    //if token not present then
     if (!jwtToken) {
       return res.status(400).json({
         success: false,
         message: "JWT token is empty!",
       });
     }
-
-    // Verify the token
+    //jwt secret
     try {
-      const tokenVerify = jwt.verify(jwtToken, process.env.SECRET_TOKEN);
-      req.checkNameAndRoleExist = tokenVerify;
-          // Move to the next middleware
-    }
-     catch (er) {
-      return res.status(400).json({
+      const jwtSecret = process.env.SECRET_TOKEN;
+      //check the token first here
+      const afterJwtVerifyTheOp = jwt.verify(jwtToken, jwtSecret);
+      // check this existing token is matched or not !
+        req.checkNameAndRoleExist = afterJwtVerifyTheOp;
+        next();
+    } catch (er) {
+      return res.status(401).json({
         success: false,
-        message: "Token invalid!",
+        message: "Something went wrong in the token verify in auth page",
         error: er.message,
       });
     }
-
-    next();
-
   } catch (er) {
     return res.status(401).json({
       success: false,
-      message: "Something went wrong while verifying the JWT!",
+      message: "Something went wrong in the auth middlewares",
       error: er.message,
     });
   }
 };
-
 // Middleware to check if the user is a student
 exports.isStudent = async (req, res, next) => {
   try {

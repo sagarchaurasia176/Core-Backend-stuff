@@ -5,11 +5,9 @@ const LoginRoute = require("./routes/log/LoginRoutes");
 require("dotenv").config();
 const dbConnection = require("./config/DbConnnection");
 //cookies parser
-const cookiesParser = require("cookie-parser");
 
 // Environment variable configuration
 const port = process.env.PORT || 8000;
-app.use(cookiesParser());
 // Middleware for parsing JSON bodies
 app.use(express.json());
 
