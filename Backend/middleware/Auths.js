@@ -18,9 +18,9 @@ exports.Authentication = async (req, res, next) => {
       const jwtSecret = process.env.SECRET_TOKEN;
       //check the token first here
       const afterJwtVerifyTheOp = jwt.verify(jwtToken, jwtSecret);
-    
       // check this existing token is matched or not !
         req.checkNameAndRoleExist = afterJwtVerifyTheOp;
+        next();
     } catch (er) {
       return res.status(401).json({
         success: false,
