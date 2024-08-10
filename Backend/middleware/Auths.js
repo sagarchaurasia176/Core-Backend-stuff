@@ -1,10 +1,12 @@
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
+
 // Main authentication middleware
 exports.Authentication = async (req, res, next) => {
   try {
-    // Extract the JWT token from request body or cookies
-    const jwtToken = req.body.token; // Corrected `req.cookie` to `req.cookies`
+    // Corrected `req.cookie` to `req.cookies`
+    const jwtToken = req.header("Authorization").replace("Bearer", "");
+    console.log("header auth", jwtToken);
 
     //if token not present then
     if (!jwtToken) {
@@ -19,8 +21,8 @@ exports.Authentication = async (req, res, next) => {
       //check the token first here
       const afterJwtVerifyTheOp = jwt.verify(jwtToken, jwtSecret);
       // check this existing token is matched or not !
-        req.checkNameAndRoleExist = afterJwtVerifyTheOp;
-        next();
+      req.checkNameAndRoleExist = afterJwtVerifyTheOp;
+      next();
     } catch (er) {
       return res.status(401).json({
         success: false,
