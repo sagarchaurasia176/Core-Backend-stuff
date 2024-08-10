@@ -46,7 +46,7 @@ exports.loginController = async (req, res) => {
 
       // create the cookies first so we get
       let options = {
-        maxAge: 1000 * 60 * 15, // would expire after 15 minutes
+        expiresIn:30000, // would expire after 15 minutes
         httpOnly: true, // The cookie only accessible by the web server
       };
       return res.cookie("auths", token, options).status(200).json({
