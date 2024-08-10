@@ -5,6 +5,7 @@ const LoginRoute = require("./routes/log/LoginRoutes");
 require("dotenv").config();
 const dbConnection = require("./config/DbConnnection");
 //cookies parser
+const cookieParser = require('cookie-parser');
 
 // Environment variable configuration
 const port = process.env.PORT || 8000;
