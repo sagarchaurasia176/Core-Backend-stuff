@@ -13,7 +13,7 @@ cloudinary.config({
 
 //validation for file format
 const isFileFormat = async (fileType, fileExtensionName) => {
-  fileExtensionName.includes(fileType);
+      fileType.includes(fileExtensionName);
 };
 
 //upload the image to the cloud so we get

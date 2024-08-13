@@ -11,13 +11,14 @@ cloudinary.config({
 });
 
 //check the fileformat
-function isFileFormat(type, fileExtension) {
-  fileExtension.includes(type);
+function isFileFormat(types, fileExtension) {
+    return types.includes(fileExtension);
 }
 
 //create the function to upload the cloudinary
 async function uploadFileToCloud(file, folder) {
   const option = { folder };
+  option.resource_type = 'auto'
   return await cloudinary.uploader.upload(file.tempFilePath, option);
 }
 
@@ -28,7 +29,7 @@ exports.VideoController = async (req, res) => {
     const { name, tag } = req.body;
     //express- upload the server
     const fileUploadToTheServer = req.files.videos;
-
+    console.log(fileUploadToTheServer);
     //validate to the server
     if (!fileUploadToTheServer) {
       return res.status(404).json({
@@ -37,11 +38,10 @@ exports.VideoController = async (req, res) => {
       });
     }
     //check the file format
-    const checkFileFormat = ["mp4", "mov", "mp3"];
+    const checkFileFormat = ["mp4", "mov", "mp3" ,'gif'];
     const fileExtensionMatching = fileUploadToTheServer.name
       .split(".")[1]
       .toLowerCase();
-
     // type and the file format conditions here so we get
     if (!isFileFormat(checkFileFormat, fileExtensionMatching)) {
       return res.status(404).json({
@@ -53,15 +53,16 @@ exports.VideoController = async (req, res) => {
 
     //used the cloudinary uploader()
     const uploadedTheVideoToTheCloud = await uploadFileToCloud(
-      fileUploadToTheServer,
-      "pyp"
+      fileUploadToTheServer,"pyp"
     );
+
     if (!uploadedTheVideoToTheCloud) {
       return res.status(404).json({
         success: false,
         message: "video not uploaded!",
         error: er.message,
       });
+
     }
     //create the entry
     const videoTable = await CloudMedia.create({ name, tag });
@@ -71,6 +72,9 @@ exports.VideoController = async (req, res) => {
       data: videoTable,
       Url: uploadedTheVideoToTheCloud.secure_url,
     });
+
+
+
   } catch (er) {
     return res.status(504).json({
       success: false,
