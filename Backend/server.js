@@ -22,8 +22,14 @@ app.use(express.json());
 //cookie-parser
 app.use(cookieParser());
 
-//file upload
-app.use(fileUpload());
+//file upload to the cloud here
+app.use(
+  fileUpload({
+    useTempFiles: true,
+    tempFileDir: "/tmp/",
+  })
+);
+
 // Database connection
 dbConnection();
 
