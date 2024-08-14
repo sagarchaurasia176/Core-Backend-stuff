@@ -16,6 +16,7 @@ const port = process.env.PORT || 8000;
 //cloudinary for cloud purpose
 const cloudinary = require("./config/Cloudinary");
 const routerUploader = require("./routes/upload/UploadRoutes");
+//email service config file
 
 // Middleware for parsing JSON bodies
 app.use(express.json());
@@ -35,6 +36,8 @@ dbConnection();
 
 //cloudinary fuction called
 cloudinary();
+
+//EMAIL SERVICE CALLING HERE
 
 // Server status route
 app.get("/", (req, res) => {
