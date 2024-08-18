@@ -76,8 +76,8 @@ MAIL_PASS =
 - check-in left side there is one menu called security
 - open it 
 - Click on two-factor authentication once it is done
-- Then type the app generated in  search bar 
-- once it is done you password is generated copy it
+- Then type the app generated in  the search bar 
+- once it is done your password is generated copy it
 - paste it into MAIL_PASS
 
 
